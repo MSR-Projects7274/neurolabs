@@ -1,51 +1,102 @@
-$(document).ready(function() {
-    console.log("NeuroLab Loaded");
+$(document).ready(function () {
 
-    $(".btn").hover(function() {
-        $(this).css("opacity", "0.8");
-    }, function() {
-        $(this).css("opacity", "1");
-    });
-});
+        if ($("#gridContainer").length) {
 
-$(document).ready(function() {
+        let activeSquares = [];
+        let playerSelections = [];
+        let roundActive = false;
+        let totalToHighlight = 4;
+        
+        let gridSize = 16;
+        createGrid(gridSize);
 
-    
-    if ($("#gridContainer").length) {
-        createGrid(16);
-    }
-    let activeSquares = [];
-let totalToHighlight = 4; // how many squares light up
+        $("#startBtn").click(function () {
+            startRound();
+        });
 
-$("#startBtn").click(function () {
-    startRound();
-});
+        $(".diffBtn").click(function () {
+            gridSize = parseInt($(this).data("size"));
+            $("#gridContainer").empty();
 
-function startRound() {
-    activeSquares = [];
-    $(".square").removeClass("active");
+            // Adjust columns automatically
+            let columns = Math.sqrt(gridSize);
+            $("#gridContainer").css("grid-template-columns", "repeat(" + columns + ", 80px)");
 
-    let allSquares = $(".square");
-    let totalSquares = allSquares.length;
+            createGrid(gridSize);
 
-    while (activeSquares.length < totalToHighlight) {
-        let randomIndex = Math.floor(Math.random() * totalSquares);
+            $("#message").text("Difficulty set. Press Start.");
+        });
 
-        if (!activeSquares.includes(randomIndex)) {
-            activeSquares.push(randomIndex);
-            allSquares.eq(randomIndex).addClass("active");
+
+        function createGrid(totalSquares) {
+            for (let i = 0; i < totalSquares; i++) {
+                $("#gridContainer").append("<div class='square'></div>");
+            }
         }
-    }
 
-    // Hide after 2.5 seconds
-    setTimeout(function () {
-        $(".square").removeClass("active");
-    }, 2500);
-}
+        function startRound() {
+            activeSquares = [];
+            playerSelections = [];
+            roundActive = false;
 
-    function createGrid(totalSquares) {
-        for (let i = 0; i < totalSquares; i++) {
-            $("#gridContainer").append("<div class='square'></div>");
+            $(".square").removeClass("active correct incorrect");
+            $("#message").text("Memorise the highlighted squares...");
+
+            let allSquares = $(".square");
+            let totalSquares = allSquares.length;
+
+            while (activeSquares.length < totalToHighlight) {
+                let randomIndex = Math.floor(Math.random() * totalSquares);
+
+                if (!activeSquares.includes(randomIndex)) {
+                    activeSquares.push(randomIndex);
+                    allSquares.eq(randomIndex).addClass("active");
+                }
+            }
+
+            setTimeout(function () {
+                $(".square").removeClass("active");
+                roundActive = true;
+                $("#message").text("Select the squares you remember.");
+            }, 2500);
+        }
+
+        // Event delegation
+        $("#gridContainer").on("click", ".square", function () {
+
+            if (!roundActive) return;
+
+            let index = $(this).index();
+
+            if (!playerSelections.includes(index)) {
+
+                playerSelections.push(index);
+
+                if (activeSquares.includes(index)) {
+                    $(this).addClass("correct");
+                } else {
+                    $(this).addClass("incorrect");
+                }
+            }
+
+            if (playerSelections.length === totalToHighlight) {
+                endRound();
+            }
+
+        });
+
+        function endRound() {
+            roundActive = false;
+
+            let correctCount = playerSelections.filter(value =>
+                activeSquares.includes(value)
+            ).length;
+
+            if (correctCount === totalToHighlight) {
+                $("#message").text("Perfect recall!");
+            } else {
+                $("#message").text("You got " + correctCount + " out of " + totalToHighlight);
+            }
         }
     }
 

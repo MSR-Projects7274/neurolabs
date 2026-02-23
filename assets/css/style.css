@@ -88,3 +88,32 @@ nav a:hover {
     background: linear-gradient(45deg, #00f7ff, #ff00c8);
     box-shadow: 0 0 15px #00f7ff;
 }
+
+.square.correct {
+    background-color: #00ff88;
+}
+
+.square.incorrect {
+    background-color: #ff3c3c;
+}
+
+/*Difficulty*/
+.difficulty {
+    margin-bottom: 20px;
+}
+
+.diffBtn {
+    padding: 8px 16px;
+    margin: 5px;
+    background-color: #1e1e1e;
+    border: 1px solid #00f7ff;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.diffBtn:hover {
+    background-color: #00f7ff;
+    color: #121212;
+}
