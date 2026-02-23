@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-    // Only run on game page
     if ($("#gridContainer").length) {
 
         let activeSquares = [];
@@ -11,11 +10,13 @@ $(document).ready(function () {
         let highlightSpeed = 2500;
         let totalToHighlight = 4;
         let gridSize = 16;
+        let gameStarted = false;
 
         createGrid(gridSize);
 
+        // ---------------------------
         // Difficulty Selector
-        
+        // ---------------------------
         $(".diffBtn").click(function () {
 
             gridSize = parseInt($(this).data("size"));
@@ -30,26 +31,30 @@ $(document).ready(function () {
             $("#message").text("Difficulty set. Press Start.");
         });
 
-        
+        // ---------------------------
         // Start Button
-
+        // ---------------------------
         $("#startBtn").click(function () {
+
+            if (!gameStarted) {
+                gameStarted = true;
+                $(".difficulty").addClass("hidden-smooth");
+                $("#startBtn").addClass("hidden-smooth");
+
+            }
+
             startRound();
         });
 
-        // Create Grid
-
+        // ---------------------------
         function createGrid(totalSquares) {
             for (let i = 0; i < totalSquares; i++) {
                 $("#gridContainer").append("<div class='square'></div>");
             }
         }
 
-        // Start Round
-
+        // ---------------------------
         function startRound() {
-
-            $("#startBtn").prop("disabled", true);
 
             activeSquares = [];
             playerSelections = [];
@@ -81,36 +86,32 @@ $(document).ready(function () {
             }, highlightSpeed);
         }
 
-        // Update Difficulty Based on Round
+        // ---------------------------
         function updateDifficultySettings() {
 
             if (round >= 1 && round <= 4) {
                 totalToHighlight = 4;
                 highlightSpeed = 2500;
             }
-
             else if (round >= 5 && round <= 9) {
                 totalToHighlight = 5;
                 highlightSpeed = 2500;
             }
-
             else if (round >= 10 && round <= 14) {
                 totalToHighlight = 5;
                 highlightSpeed = 1500;
             }
-
             else if (round >= 15 && round <= 20) {
                 totalToHighlight = 6;
                 highlightSpeed = 2500;
             }
-
             else if (round >= 21 && round <= 25) {
                 totalToHighlight = 6;
                 highlightSpeed = 1200;
             }
         }
 
-        // Square Click Handling
+        // ---------------------------
         $("#gridContainer").on("click", ".square", function () {
 
             if (!roundActive) return;
@@ -134,7 +135,7 @@ $(document).ready(function () {
 
         });
 
-        // End Round
+        // ---------------------------
         function endRound() {
 
             roundActive = false;
@@ -149,11 +150,9 @@ $(document).ready(function () {
 
                 if (round > 25) {
                     $("#message").text("🎉 You completed NeuroLab! 🎉");
-                    $("#startBtn").prop("disabled", true);
                     return;
                 }
 
-                // Milestone messages AFTER rounds 4, 14, 20
                 if (round === 5) {
                     $("#message").text("Well done! Get ready for the next challenge...");
                 }
@@ -164,17 +163,26 @@ $(document).ready(function () {
                     $("#message").text("🔥 Boss Level Incoming 🔥 Stay sharp...");
                 }
                 else {
-                    $("#message").text("Correct! Prepare for the next round...");
+                    $("#message").text("Correct! Next round starting...");
                 }
 
-            } else {
-                $("#message").text("You got " + correctCount + " out of " + totalToHighlight + ". Try again.");
-            }
+                setTimeout(function () {
+                    startRound();
+                }, 2000);
 
-            setTimeout(function () {
-                $("#startBtn").prop("disabled", false);
-                $("#roundDisplay").text("Round: " + round);
-            }, 1500);
+            } else {
+
+                $("#message").text("You got " + correctCount + " out of " + totalToHighlight + ". Try again.");
+
+                // Show controls again on failure
+                setTimeout(function () {
+                $(".difficulty").removeClass("hidden-smooth");
+                $("#startBtn").removeClass("hidden-smooth");
+
+
+                    gameStarted = false;
+                }, 2000);
+            }
         }
 
     }

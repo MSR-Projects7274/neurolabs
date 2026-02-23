@@ -23,6 +23,13 @@ nav h1 {
     color: #00f7ff;
 }
 
+h1 a.header-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
 nav ul {
     list-style: none;
     display: flex;
@@ -116,4 +123,28 @@ nav a:hover {
 .diffBtn:hover {
     background-color: #00f7ff;
     color: #121212;
+}
+
+/*Hide Difficulty and Start Buttons when Game begins*/
+.hidden-smooth {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+}
+
+.difficulty,
+#startBtn {
+    transition: opacity 0.8s ease;
+}
+
+/*About page*/
+.container {
+    max-width: 600px;
+    margin: 80px auto;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    font-weight: bold;
 }
