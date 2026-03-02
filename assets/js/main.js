@@ -12,11 +12,13 @@ $(document).ready(function () {
         let gridSize = 16;
         let gameStarted = false;
 
+        // Initially hide the grid
+        $("#gridContainer").hide();
+
         createGrid(gridSize);
 
-        // ---------------------------
+
         // Difficulty Selector
-        // ---------------------------
         $(".diffBtn").click(function () {
 
             gridSize = parseInt($(this).data("size"));
@@ -24,16 +26,18 @@ $(document).ready(function () {
             $("#gridContainer").empty();
 
             let columns = Math.sqrt(gridSize);
-            $("#gridContainer").css("grid-template-columns", "repeat(" + columns + ", 80px)");
+            $("#gridContainer").css("grid-template-columns", "repeat(" + columns + ", 1fr)");
 
             createGrid(gridSize);
+
+            // Show the grid only after difficulty selected
+            $("#gridContainer").show();
 
             $("#message").text("Difficulty set. Press Start.");
         });
 
-        // ---------------------------
+
         // Start Button
-        // ---------------------------
         $("#startBtn").click(function () {
 
             if (!gameStarted) {
@@ -46,14 +50,12 @@ $(document).ready(function () {
             startRound();
         });
 
-        // ---------------------------
         function createGrid(totalSquares) {
             for (let i = 0; i < totalSquares; i++) {
                 $("#gridContainer").append("<div class='square'></div>");
             }
         }
 
-        // ---------------------------
         function startRound() {
 
             activeSquares = [];
@@ -86,7 +88,6 @@ $(document).ready(function () {
             }, highlightSpeed);
         }
 
-        // ---------------------------
         function updateDifficultySettings() {
 
             if (round >= 1 && round <= 4) {
@@ -111,7 +112,6 @@ $(document).ready(function () {
             }
         }
 
-        // ---------------------------
         $("#gridContainer").on("click", ".square", function () {
 
             if (!roundActive) return;
@@ -135,7 +135,6 @@ $(document).ready(function () {
 
         });
 
-        // ---------------------------
         function endRound() {
 
             roundActive = false;
@@ -179,12 +178,24 @@ $(document).ready(function () {
                 $(".difficulty").removeClass("hidden-smooth");
                 $("#startBtn").removeClass("hidden-smooth");
 
-
                     gameStarted = false;
                 }, 2000);
             }
         }
 
     }
+
+    $(document).ready(function () {
+
+        $('nav').click(function (e) {
+
+            // Only trigger when clicking the burger icon area
+            if ($(window).width() <= 992) {
+            $(this).toggleClass('open');
+            }
+
+        });
+
+    });
 
 });

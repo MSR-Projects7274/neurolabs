@@ -1,48 +1,55 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>NeuroLab - Play</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css" />
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="assets/js/main.js" defer></script>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <nav>
-        <h1><a href="index.html" class="header-link">NeuroLab</a></h1>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="game.html">Play</a></li>
-            <li><a href="about.html">About</a></li>
-        </ul>
+      <h1><a href="index.html" class="header-link">NeuroLab</a></h1>
+
+      <div class="burger" id="burger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <ul id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="game.html">Play</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
     </nav>
 
     <main>
-        <section class="game-area">
-            <h2>Visual Recall Challenge</h2>
-            <p>Memorise the highlighted squares before they disappear.</p>
+      <section class="game-area">
+        <h2>Visual Recall Challenge</h2>
+        <p>Memorise the highlighted squares before they disappear.</p>
 
-            <div class="difficulty">
-                <button class="diffBtn" data-size="9">Easy</button>
-                <button class="diffBtn" data-size="16">Medium</button>
-                <button class="diffBtn" data-size="25">Hard</button>
-            </div>
+        <div class="difficulty">
+          <button class="diffBtn" data-size="9">Easy</button>
+          <button class="diffBtn" data-size="16">Medium</button>
+          <button class="diffBtn" data-size="25">Hard</button>
+        </div>
 
+        <div class="controls">
+          <button id="startBtn" class="btn">Start Round</button>
+        </div>
 
-            <div class="controls">
-                <button id="startBtn" class="btn">Start Round</button>
-            </div>
-            
-            <p id="message"></p>
+        <p id="message"></p>
 
-            <div id="gridContainer"></div>
-        </section>
+        <!-- Grid Wrapper -->
+        <div class="grid-wrapper">
+            <div id="gridContainer" data-size="9"></div>
+        </div>
+      </section>
     </main>
-
-</body>
+  </body>
 </html>
