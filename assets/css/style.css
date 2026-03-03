@@ -46,6 +46,11 @@ nav a:hover {
     color: #ff00c8;
 }
 
+nav a.active {
+    color: #00f7ff;
+    font-weight: bold;
+}
+
 /*Hero Section*/
 .hero {
     text-align: center;

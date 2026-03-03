@@ -1,5 +1,13 @@
 $(document).ready(function () {
 
+    // Active nav link highlighting
+    $('#navLinks a').each(function () {
+        if (this.href === window.location.href) {
+            $(this).addClass('active');
+        }
+    });
+
+    // Only run the game code if the grid exists
     if ($("#gridContainer").length) {
 
         let activeSquares = [];
@@ -15,48 +23,39 @@ $(document).ready(function () {
         // Initially hide the grid
         $("#gridContainer").hide();
 
-        createGrid(gridSize);
-
-
-        // Difficulty Selector
-        $(".diffBtn").click(function () {
-
-            gridSize = parseInt($(this).data("size"));
-
-            $("#gridContainer").empty();
-
-            let columns = Math.sqrt(gridSize);
-            $("#gridContainer").css("grid-template-columns", "repeat(" + columns + ", 1fr)");
-
-            createGrid(gridSize);
-
-            // Show the grid only after difficulty selected
-            $("#gridContainer").show();
-
-            $("#message").text("Difficulty set. Press Start.");
-        });
-
-
-        // Start Button
-        $("#startBtn").click(function () {
-
-            if (!gameStarted) {
-                gameStarted = true;
-                $(".difficulty").addClass("hidden-smooth");
-                $("#startBtn").addClass("hidden-smooth");
-
-            }
-
-            startRound();
-        });
-
-        function createGrid(totalSquares) {
+        // Create grid squares
+        const createGrid = function (totalSquares) {
             for (let i = 0; i < totalSquares; i++) {
                 $("#gridContainer").append("<div class='square'></div>");
             }
-        }
+        };
 
-        function startRound() {
+        // Update difficulty settings based on current round
+        const updateDifficultySettings = function () {
+            if (round >= 1 && round <= 4) {
+                totalToHighlight = 4;
+                highlightSpeed = 2500;
+            }
+            else if (round >= 5 && round <= 9) {
+                totalToHighlight = 5;
+                highlightSpeed = 2500;
+            }
+            else if (round >= 10 && round <= 14) {
+                totalToHighlight = 5;
+                highlightSpeed = 1500;
+            }
+            else if (round >= 15 && round <= 20) {
+                totalToHighlight = 6;
+                highlightSpeed = 2500;
+            }
+            else if (round >= 21 && round <= 25) {
+                totalToHighlight = 6;
+                highlightSpeed = 1200;
+            }
+        };
+
+        // Start a new round
+        const startRound = function () {
 
             activeSquares = [];
             playerSelections = [];
@@ -86,56 +85,10 @@ $(document).ready(function () {
                 roundActive = true;
                 $("#message").text("Select the squares you remember.");
             }, highlightSpeed);
-        }
+        };
 
-        function updateDifficultySettings() {
-
-            if (round >= 1 && round <= 4) {
-                totalToHighlight = 4;
-                highlightSpeed = 2500;
-            }
-            else if (round >= 5 && round <= 9) {
-                totalToHighlight = 5;
-                highlightSpeed = 2500;
-            }
-            else if (round >= 10 && round <= 14) {
-                totalToHighlight = 5;
-                highlightSpeed = 1500;
-            }
-            else if (round >= 15 && round <= 20) {
-                totalToHighlight = 6;
-                highlightSpeed = 2500;
-            }
-            else if (round >= 21 && round <= 25) {
-                totalToHighlight = 6;
-                highlightSpeed = 1200;
-            }
-        }
-
-        $("#gridContainer").on("click", ".square", function () {
-
-            if (!roundActive) return;
-
-            let index = $(this).index();
-
-            if (!playerSelections.includes(index)) {
-
-                playerSelections.push(index);
-
-                if (activeSquares.includes(index)) {
-                    $(this).addClass("correct");
-                } else {
-                    $(this).addClass("incorrect");
-                }
-            }
-
-            if (playerSelections.length === totalToHighlight) {
-                endRound();
-            }
-
-        });
-
-        function endRound() {
+        // End the current round
+        const endRound = function () {
 
             roundActive = false;
 
@@ -173,29 +126,74 @@ $(document).ready(function () {
 
                 $("#message").text("You got " + correctCount + " out of " + totalToHighlight + ". Try again.");
 
-                // Show controls again on failure
                 setTimeout(function () {
-                $(".difficulty").removeClass("hidden-smooth");
-                $("#startBtn").removeClass("hidden-smooth");
-
+                    $(".difficulty").removeClass("hidden-smooth");
+                    $("#startBtn").removeClass("hidden-smooth");
                     gameStarted = false;
                 }, 2000);
             }
-        }
+        };
 
-    }
+        // Initialize grid
+        createGrid(gridSize);
 
-    $(document).ready(function () {
+        // Difficulty buttons
+        $(".diffBtn").click(function () {
 
-        $('nav').click(function (e) {
+            gridSize = parseInt($(this).data("size"));
 
-            // Only trigger when clicking the burger icon area
-            if ($(window).width() <= 992) {
-            $(this).toggleClass('open');
-            }
+            $("#gridContainer").empty();
 
+            let columns = Math.sqrt(gridSize);
+            $("#gridContainer").css("grid-template-columns", "repeat(" + columns + ", 1fr)");
+
+            createGrid(gridSize);
+
+            $("#gridContainer").show();
+            $("#message").text("Difficulty set. Press Start.");
         });
 
+        // Start button
+        $("#startBtn").click(function () {
+
+            if (!gameStarted) {
+                gameStarted = true;
+                $(".difficulty").addClass("hidden-smooth");
+                $("#startBtn").addClass("hidden-smooth");
+            }
+
+            startRound();
+        });
+
+        // Square click
+        $("#gridContainer").on("click", ".square", function () {
+
+            if (!roundActive) return;
+
+            let index = $(this).index();
+
+            if (!playerSelections.includes(index)) {
+
+                playerSelections.push(index);
+
+                if (activeSquares.includes(index)) {
+                    $(this).addClass("correct");
+                } else {
+                    $(this).addClass("incorrect");
+                }
+            }
+
+            if (playerSelections.length === totalToHighlight) {
+                endRound();
+            }
+        });
+    }
+
+    // Burger menu toggle
+    $("#burger").click(function () {
+        if ($(window).width() <= 992) {
+            $("nav").toggleClass("open");
+        }
     });
 
 });
