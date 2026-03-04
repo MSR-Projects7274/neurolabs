@@ -24,24 +24,30 @@ $(document).ready(function () {
         const $roundDisplay = $("#roundDisplay");
         const $difficultyBtns = $(".diffBtn");
         const $startBtn = $("#startBtn");
-        const $gameControlsWrapper = $("#gameControlsWrapper");
         const $message = $("#message");
 
         $gridContainer.hide();
         $roundDisplay.hide();
+        $message.hide();
 
-        // Create grid
-        const createGrid = function (totalSquares) {
+        // ======================
+        // Create Grid
+        // ======================
+        function createGrid(totalSquares) {
             $gridContainer.empty();
+
             for (let i = 0; i < totalSquares; i++) {
                 $gridContainer.append("<div class='square'></div>");
             }
-            let columns = Math.sqrt(totalSquares);
-            $gridContainer.css("grid-template-columns", "repeat(" + columns + ", 1fr)");
-        };
 
-        // Difficulty scaling
-        const updateDifficultySettings = function () {
+            let columns = Math.sqrt(totalSquares);
+            $gridContainer.css("grid-template-columns", `repeat(${columns}, 1fr)`);
+        }
+
+        // ======================
+        // Difficulty Scaling
+        // ======================
+        function updateDifficultySettings() {
             if (round <= 4) {
                 totalToHighlight = 4;
                 highlightSpeed = 2500;
@@ -58,10 +64,12 @@ $(document).ready(function () {
                 totalToHighlight = 6;
                 highlightSpeed = 1200;
             }
-        };
+        }
 
-        const startRound = function () {
-
+        // ======================
+        // Start Round
+        // ======================
+        function startRound() {
             activeSquares = [];
             playerSelections = [];
             roundActive = false;
@@ -71,26 +79,67 @@ $(document).ready(function () {
             updateDifficultySettings();
             $roundDisplay.text("Round: " + round);
 
-            let allSquares = $(".square");
-            let totalSquares = allSquares.length;
+            let totalSquares = $(".square").length;
 
             while (activeSquares.length < totalToHighlight) {
                 let randomIndex = Math.floor(Math.random() * totalSquares);
                 if (!activeSquares.includes(randomIndex)) {
                     activeSquares.push(randomIndex);
-                    allSquares.eq(randomIndex).addClass("active");
+                    $(".square").eq(randomIndex).addClass("active");
                 }
             }
 
-            // Fade in the “Select the squares” message smoothly
             setTimeout(function () {
                 $(".square").removeClass("active");
                 roundActive = true;
-                $message.css("opacity", 0).text("Select the squares you remember.").animate({ opacity: 1 }, 400);
-            }, highlightSpeed);
-        };
 
-        const endRound = function () {
+                $message.stop(true, true)
+                    .show()
+                    .css("opacity", 0)
+                    .text("Select the squares you remember.")
+                    .animate({ opacity: 1 }, 400);
+
+            }, highlightSpeed);
+        }
+
+        // ======================
+        // FULL RESET
+        // ======================
+        function resetGameCompletely() {
+
+            round = 1;
+            activeSquares = [];
+            playerSelections = [];
+            roundActive = false;
+            gameStarted = false;
+            difficultySelected = false;
+            gridSize = 0;
+
+            $difficultyBtns.removeClass("active-diff");
+            $difficultyBtns.prop("disabled", false);
+
+            $gridContainer.slideUp(600, function () {
+                $gridContainer.empty();
+            });
+
+            $roundDisplay.fadeOut(400);
+
+            $difficultyBtns.add($startBtn).each(function () {
+                $(this).css({
+                    display: "inline-block",
+                    opacity: 0
+                }).animate({ opacity: 1 }, 600);
+            });
+
+            $message.stop(true, true).fadeOut(400, function () {
+                $(this).text("");
+            });
+        }
+
+        // ======================
+        // End Round
+        // ======================
+        function endRound() {
 
             roundActive = false;
 
@@ -103,63 +152,65 @@ $(document).ready(function () {
                 round++;
 
                 if (round > 25) {
-                    $message.text("🎉 You completed NeuroLab! 🎉");
+
+                    $message.stop(true, true)
+                        .show()
+                        .css("opacity", 0)
+                        .text("🎉 You completed NeuroLab! 🎉")
+                        .animate({ opacity: 1 }, 400);
+
+                    setTimeout(function () {
+                        $message.fadeOut(400, resetGameCompletely);
+                    }, 2000);
+
                     return;
                 }
 
-                $message.text("Correct! Next round starting...");
+                $message.stop(true, true)
+                    .show()
+                    .css("opacity", 0)
+                    .text("Correct! Next round starting...")
+                    .animate({ opacity: 1 }, 400);
+
                 setTimeout(startRound, 2000);
 
             } else {
 
-                $message.text(
-                    "You got " + correctCount + " out of " + totalToHighlight + ". Try again."
-                );
+                $message.stop(true, true)
+                    .show()
+                    .css("opacity", 0)
+                    .text(`You got ${correctCount} out of ${totalToHighlight}. Try again.`)
+                    .animate({ opacity: 1 }, 400);
 
                 setTimeout(function () {
-
-                    // Restore buttons smoothly
-                    $difficultyBtns.add($startBtn).each(function () {
-                        let $el = $(this);
-                        $el.css({
-                            display: "inline-block",
-                            opacity: 0,
-                            height: "",
-                            margin: "",
-                            paddingTop: "",
-                            paddingBottom: ""
-                        }).animate({ opacity: 1 }, 600);
-                    });
-
-                    gameStarted = false;
-
+                    $message.fadeOut(400, resetGameCompletely);
                 }, 2000);
             }
-        };
+        }
 
-        // Difficulty select
+        // ======================
+        // Difficulty Select
+        // ======================
         $difficultyBtns.click(function () {
 
-            // Remove previous active highlight
             $difficultyBtns.removeClass("active-diff");
-
-            // Highlight the selected button
             $(this).addClass("active-diff");
 
-            // Store grid size
             gridSize = parseInt($(this).data("size"));
             difficultySelected = true;
 
             createGrid(gridSize);
 
-            $gridContainer.hide();
-            $roundDisplay.hide();
-
-            // Show difficulty message immediately
-            $message.css({ opacity: 1 }).text("Difficulty set. Press Start.");
+            $message.stop(true, true)
+                .show()
+                .css("opacity", 0)
+                .text("Difficulty set. Press Start.")
+                .animate({ opacity: 1 }, 400);
         });
 
-        // Start button
+        // ======================
+        // Start Button
+        // ======================
         $startBtn.click(function () {
 
             if (!difficultySelected) {
@@ -171,60 +222,20 @@ $(document).ready(function () {
 
                 gameStarted = true;
 
-                // Disable further difficulty selection
                 $difficultyBtns.prop("disabled", true);
 
-                // Lock wrapper height
-                let currentHeight = $gameControlsWrapper.outerHeight();
-                $gameControlsWrapper.height(currentHeight);
+                $difficultyBtns.add($startBtn).fadeOut(600);
 
-                // Fade out the difficulty message smoothly
-                $message.animate({ opacity: 0 }, 400);
+                $gridContainer.slideDown(800);
+                $roundDisplay.fadeIn(600);
 
-                // Collapse buttons smoothly
-                $difficultyBtns.add($startBtn).each(function () {
-
-                    let $el = $(this);
-
-                    $el.animate({
-                        opacity: 0,
-                        height: 0,
-                        margin: 0,
-                        paddingTop: 0,
-                        paddingBottom: 0
-                    }, 800, function () {
-                        $el.css("display", "none");
-                    });
-
-                });
-
-                // Show grid and round before measuring
-                $gridContainer.show();
-                $roundDisplay.show();
-
-                // Measure full height of wrapper
-                let newHeight = $gameControlsWrapper.get(0).scrollHeight;
-
-                // Animate wrapper expansion
-                $gameControlsWrapper.animate(
-                    { height: newHeight },
-                    1400,
-                    function () {
-
-                        // Start round first while height is locked
-                        startRound();
-
-                        // Release height after highlight animation finishes
-                        setTimeout(function () {
-                            $gameControlsWrapper.css("height", "auto");
-                        }, highlightSpeed + 100);
-
-                    }
-                );
+                setTimeout(startRound, 800);
             }
         });
 
-        // Square click
+        // ======================
+        // Square Click
+        // ======================
         $gridContainer.on("click", ".square", function () {
 
             if (!roundActive) return;
@@ -247,13 +258,9 @@ $(document).ready(function () {
             }
         });
 
-        // Initialize grid hidden
-        createGrid(16);
-        $gridContainer.hide();
-        $roundDisplay.hide();
     }
 
-    // Burger menu toggle
+    // Burger Menu
     $("#burger").click(function () {
         if ($(window).width() <= 992) {
             $("nav").toggleClass("open");
