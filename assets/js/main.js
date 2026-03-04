@@ -1,13 +1,12 @@
 $(document).ready(function () {
 
-    // Active nav link highlighting
+    // Highlight active nav link
     $('#navLinks a').each(function () {
         if (this.href === window.location.href) {
             $(this).addClass('active');
         }
     });
 
-    // Only run the game code if the grid exists
     if ($("#gridContainer").length) {
 
         let activeSquares = [];
@@ -17,44 +16,50 @@ $(document).ready(function () {
         let round = 1;
         let highlightSpeed = 2500;
         let totalToHighlight = 4;
-        let gridSize = 16;
+        let gridSize = 0;
         let gameStarted = false;
+        let difficultySelected = false;
 
-        // Initially hide the grid
-        $("#gridContainer").hide();
+        const $gridContainer = $("#gridContainer");
+        const $roundDisplay = $("#roundDisplay");
+        const $difficultyBtns = $(".diffBtn");
+        const $startBtn = $("#startBtn");
+        const $gameControlsWrapper = $("#gameControlsWrapper");
+        const $message = $("#message");
 
-        // Create grid squares
+        $gridContainer.hide();
+        $roundDisplay.hide();
+
+        // Create grid
         const createGrid = function (totalSquares) {
+            $gridContainer.empty();
             for (let i = 0; i < totalSquares; i++) {
-                $("#gridContainer").append("<div class='square'></div>");
+                $gridContainer.append("<div class='square'></div>");
             }
+            let columns = Math.sqrt(totalSquares);
+            $gridContainer.css("grid-template-columns", "repeat(" + columns + ", 1fr)");
         };
 
-        // Update difficulty settings based on current round
+        // Difficulty scaling
         const updateDifficultySettings = function () {
-            if (round >= 1 && round <= 4) {
+            if (round <= 4) {
                 totalToHighlight = 4;
                 highlightSpeed = 2500;
-            }
-            else if (round >= 5 && round <= 9) {
+            } else if (round <= 9) {
                 totalToHighlight = 5;
                 highlightSpeed = 2500;
-            }
-            else if (round >= 10 && round <= 14) {
+            } else if (round <= 14) {
                 totalToHighlight = 5;
                 highlightSpeed = 1500;
-            }
-            else if (round >= 15 && round <= 20) {
+            } else if (round <= 20) {
                 totalToHighlight = 6;
                 highlightSpeed = 2500;
-            }
-            else if (round >= 21 && round <= 25) {
+            } else {
                 totalToHighlight = 6;
                 highlightSpeed = 1200;
             }
         };
 
-        // Start a new round
         const startRound = function () {
 
             activeSquares = [];
@@ -64,30 +69,27 @@ $(document).ready(function () {
             $(".square").removeClass("active correct incorrect");
 
             updateDifficultySettings();
-
-            $("#roundDisplay").text("Round: " + round);
-            $("#message").text("Memorise the highlighted squares...");
+            $roundDisplay.text("Round: " + round);
 
             let allSquares = $(".square");
             let totalSquares = allSquares.length;
 
             while (activeSquares.length < totalToHighlight) {
                 let randomIndex = Math.floor(Math.random() * totalSquares);
-
                 if (!activeSquares.includes(randomIndex)) {
                     activeSquares.push(randomIndex);
                     allSquares.eq(randomIndex).addClass("active");
                 }
             }
 
+            // Fade in the “Select the squares” message smoothly
             setTimeout(function () {
                 $(".square").removeClass("active");
                 roundActive = true;
-                $("#message").text("Select the squares you remember.");
+                $message.css("opacity", 0).text("Select the squares you remember.").animate({ opacity: 1 }, 400);
             }, highlightSpeed);
         };
 
-        // End the current round
         const endRound = function () {
 
             roundActive = false;
@@ -101,72 +103,129 @@ $(document).ready(function () {
                 round++;
 
                 if (round > 25) {
-                    $("#message").text("🎉 You completed NeuroLab! 🎉");
+                    $message.text("🎉 You completed NeuroLab! 🎉");
                     return;
                 }
 
-                if (round === 5) {
-                    $("#message").text("Well done! Get ready for the next challenge...");
-                }
-                else if (round === 15) {
-                    $("#message").text("Impressive focus. Things are about to speed up...");
-                }
-                else if (round === 21) {
-                    $("#message").text("🔥 Boss Level Incoming 🔥 Stay sharp...");
-                }
-                else {
-                    $("#message").text("Correct! Next round starting...");
-                }
-
-                setTimeout(function () {
-                    startRound();
-                }, 2000);
+                $message.text("Correct! Next round starting...");
+                setTimeout(startRound, 2000);
 
             } else {
 
-                $("#message").text("You got " + correctCount + " out of " + totalToHighlight + ". Try again.");
+                $message.text(
+                    "You got " + correctCount + " out of " + totalToHighlight + ". Try again."
+                );
 
                 setTimeout(function () {
-                    $(".difficulty").removeClass("hidden-smooth");
-                    $("#startBtn").removeClass("hidden-smooth");
+
+                    // Restore buttons smoothly
+                    $difficultyBtns.add($startBtn).each(function () {
+                        let $el = $(this);
+                        $el.css({
+                            display: "inline-block",
+                            opacity: 0,
+                            height: "",
+                            margin: "",
+                            paddingTop: "",
+                            paddingBottom: ""
+                        }).animate({ opacity: 1 }, 600);
+                    });
+
                     gameStarted = false;
+
                 }, 2000);
             }
         };
 
-        // Initialize grid
-        createGrid(gridSize);
+        // Difficulty select
+        $difficultyBtns.click(function () {
 
-        // Difficulty buttons
-        $(".diffBtn").click(function () {
+            // Remove previous active highlight
+            $difficultyBtns.removeClass("active-diff");
 
+            // Highlight the selected button
+            $(this).addClass("active-diff");
+
+            // Store grid size
             gridSize = parseInt($(this).data("size"));
-
-            $("#gridContainer").empty();
-
-            let columns = Math.sqrt(gridSize);
-            $("#gridContainer").css("grid-template-columns", "repeat(" + columns + ", 1fr)");
+            difficultySelected = true;
 
             createGrid(gridSize);
 
-            $("#gridContainer").show();
-            $("#message").text("Difficulty set. Press Start.");
+            $gridContainer.hide();
+            $roundDisplay.hide();
+
+            // Show difficulty message immediately
+            $message.css({ opacity: 1 }).text("Difficulty set. Press Start.");
         });
 
         // Start button
-        $("#startBtn").click(function () {
+        $startBtn.click(function () {
 
-            if (!gameStarted) {
-                gameStarted = true;
-                $(".difficulty").addClass("hidden-smooth");
-                $("#startBtn").addClass("hidden-smooth");
+            if (!difficultySelected) {
+                alert("Please select a difficulty first!");
+                return;
             }
 
-            startRound();
+            if (!gameStarted) {
+
+                gameStarted = true;
+
+                // Disable further difficulty selection
+                $difficultyBtns.prop("disabled", true);
+
+                // Lock wrapper height
+                let currentHeight = $gameControlsWrapper.outerHeight();
+                $gameControlsWrapper.height(currentHeight);
+
+                // Fade out the difficulty message smoothly
+                $message.animate({ opacity: 0 }, 400);
+
+                // Collapse buttons smoothly
+                $difficultyBtns.add($startBtn).each(function () {
+
+                    let $el = $(this);
+
+                    $el.animate({
+                        opacity: 0,
+                        height: 0,
+                        margin: 0,
+                        paddingTop: 0,
+                        paddingBottom: 0
+                    }, 800, function () {
+                        $el.css("display", "none");
+                    });
+
+                });
+
+                // Show grid and round before measuring
+                $gridContainer.show();
+                $roundDisplay.show();
+
+                // Measure full height of wrapper
+                let newHeight = $gameControlsWrapper.get(0).scrollHeight;
+
+                // Animate wrapper expansion
+                $gameControlsWrapper.animate(
+                    { height: newHeight },
+                    1400,
+                    function () {
+
+                        // Start round first while height is locked
+                        startRound();
+
+                        // Release height after highlight animation finishes
+                        setTimeout(function () {
+                            $gameControlsWrapper.css("height", "auto");
+                        }, highlightSpeed + 100);
+
+                    }
+                );
+            }
         });
 
         // Square click
-        $("#gridContainer").on("click", ".square", function () {
+        $gridContainer.on("click", ".square", function () {
 
             if (!roundActive) return;
 
@@ -187,6 +246,11 @@ $(document).ready(function () {
                 endRound();
             }
         });
+
+        // Initialize grid hidden
+        createGrid(16);
+        $gridContainer.hide();
+        $roundDisplay.hide();
     }
 
     // Burger menu toggle

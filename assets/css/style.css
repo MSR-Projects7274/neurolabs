@@ -125,6 +125,11 @@ nav a.active {
     transition: 0.3s;
 }
 
+.diffBtn.active-diff {
+    background-color: #00f7ff;
+    color: #121212;
+}
+
 .diffBtn:hover {
     background-color: #00f7ff;
     color: #121212;
@@ -140,6 +145,25 @@ nav a.active {
 .difficulty,
 #startBtn {
     transition: opacity 0.8s ease;
+}
+
+/*Round Display*/
+#roundDisplay {
+    font-weight: bold;
+    margin-top: 20px;
+    color: #00f7ff;
+    font-size: 1.2em;
+}
+
+#roundDisplay {
+    display: block;
+    min-height: 30px;   /* reserves space */
+    line-height: 30px;  /* keeps text centred vertically */
+    margin: 20px 0;
+}
+
+#message {
+    min-height: 60px;
 }
 
 /*About page*/
