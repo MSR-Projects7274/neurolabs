@@ -38,7 +38,7 @@ $(document).ready(function () {
     function playSound(sound) {
       if (!sound) return;
       sound.currentTime = 0;
-      sound.play();
+      sound.play().catch(() => {});
     }
 
     $gridContainer.hide();
@@ -46,8 +46,9 @@ $(document).ready(function () {
     $message.hide();
 
     // ======================
-    // CELEBRATION CONFETTI
+    // CONFETTI
     // ======================
+
     function fireConfetti() {
 
       const duration = 1200;
@@ -77,8 +78,60 @@ $(document).ready(function () {
     }
 
     // ======================
+    // BOSS GLITCH EFFECT
+    // ======================
+
+    function startBossGlitch() {
+
+      const squares = $(".square");
+
+      let glitchInterval = setInterval(function () {
+
+        let randomSquare = squares.eq(Math.floor(Math.random() * squares.length));
+
+        randomSquare.addClass("glitch");
+
+        setTimeout(function () {
+          randomSquare.removeClass("glitch");
+        }, 120);
+
+      }, 80);
+
+      setTimeout(function () {
+        clearInterval(glitchInterval);
+      }, 1800);
+    }
+
+    // ======================
+    // WARNING FLASH
+    // ======================
+
+    function bossWarningFlash() {
+
+      let flashes = 0;
+
+      let warningInterval = setInterval(function () {
+
+        if (flashes % 2 === 0) {
+          $roundDisplay.text("⚠ WARNING ⚠");
+        } else {
+          $roundDisplay.text(" ");
+        }
+
+        flashes++;
+
+        if (flashes > 6) {
+          clearInterval(warningInterval);
+        }
+
+      }, 250);
+
+    }
+
+    // ======================
     // Create Grid
     // ======================
+
     function createGrid(totalSquares) {
 
       $gridContainer.empty();
@@ -94,6 +147,7 @@ $(document).ready(function () {
     // ======================
     // Difficulty Scaling
     // ======================
+
     function updateDifficultySettings() {
 
       if (round <= 4) {
@@ -122,6 +176,7 @@ $(document).ready(function () {
     // ======================
     // Start Round
     // ======================
+
     function startRound() {
 
       activeSquares = [];
@@ -167,6 +222,7 @@ $(document).ready(function () {
     // ======================
     // FULL RESET
     // ======================
+
     function resetGameCompletely() {
 
       round = 1;
@@ -176,6 +232,11 @@ $(document).ready(function () {
       gameStarted = false;
       difficultySelected = false;
       gridSize = 0;
+
+      $("body").css("background", "black");
+      $("body").removeClass("boss-dark boss-shake");
+
+      $gridContainer.removeClass("boss-pulse");
 
       $difficultyBtns.removeClass("active-diff");
       $difficultyBtns.prop("disabled", false);
@@ -204,6 +265,7 @@ $(document).ready(function () {
     // ======================
     // End Round
     // ======================
+
     function endRound() {
 
       roundActive = false;
@@ -218,7 +280,7 @@ $(document).ready(function () {
 
         round++;
 
-        // GAME COMPLETED
+        // GAME COMPLETE
         if (round > 25) {
 
           playSound(soundVictory);
@@ -238,7 +300,55 @@ $(document).ready(function () {
           return;
         }
 
-        // Special milestone messages
+        // ======================
+        // BOSS INTERRUPT
+        // ======================
+
+        if (round === 21) {
+
+          $message
+            .stop(true, true)
+            .show()
+            .css("opacity", 0)
+            .text("Correct! Next round star—")
+            .animate({ opacity: 1 }, 200);
+
+          setTimeout(function () {
+
+            playSound(soundBoss);
+
+            $("body").addClass("boss-dark boss-shake");
+            $gridContainer.addClass("boss-pulse");
+
+            startBossGlitch();
+            bossWarningFlash();
+
+            $message
+              .stop(true, true)
+              .css("opacity", 0)
+              .text("🔥 BOSS LEVEL INCOMING 🔥")
+              .animate({ opacity: 1 }, 400);
+
+            setTimeout(function () {
+
+              $("body").removeClass("boss-dark boss-shake");
+              $("body").css("background", "black");
+
+              $gridContainer.removeClass("boss-pulse");
+
+              startRound();
+
+            }, 2000);
+
+          }, 700);
+
+          return;
+        }
+
+        // ======================
+        // NORMAL MESSAGE
+        // ======================
+
         let nextMessage = "Correct! Next round starting...";
 
         if (round === 5) {
@@ -246,12 +356,6 @@ $(document).ready(function () {
         }
         else if (round === 15) {
           nextMessage = "Impressive focus. Things are about to speed up...";
-        }
-        else if (round === 21) {
-
-          nextMessage = "🔥 Boss Level Incoming 🔥 Stay sharp...";
-          playSound(soundBoss);
-
         }
 
         $message
@@ -264,6 +368,7 @@ $(document).ready(function () {
         setTimeout(startRound, 2000);
 
       }
+
       else {
 
         playSound(soundFail);
@@ -286,6 +391,7 @@ $(document).ready(function () {
     // ======================
     // Difficulty Select
     // ======================
+
     $difficultyBtns.click(function () {
 
       $difficultyBtns.removeClass("active-diff");
@@ -308,6 +414,7 @@ $(document).ready(function () {
     // ======================
     // Start Button
     // ======================
+
     $startBtn.click(function () {
 
       if (!difficultySelected) {
@@ -335,6 +442,7 @@ $(document).ready(function () {
     // ======================
     // Square Click
     // ======================
+
     $gridContainer.on("click", ".square", function () {
 
       if (!roundActive) return;
