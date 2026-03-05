@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -20,7 +20,11 @@
 
   <body>
     <nav>
-      <h1><a href="index.html" class="header-link" aria-label="NeuroLab home page">NeuroLab</a></h1>
+      <h1>
+        <a href="index.html" class="header-link" aria-label="NeuroLab home page"
+          >NeuroLab</a
+        >
+      </h1>
 
       <div class="burger" id="burger">
         <span></span>
@@ -42,28 +46,62 @@
 
         <!-- Wrapper for buttons + grid for smooth slide -->
         <div id="gameControlsWrapper">
-
           <div class="difficulty" aria-label="Select game difficulty level">
-            <button class="diffBtn" data-size="9" aria-label="Easy difficulty">Easy</button>
-            <button class="diffBtn" data-size="16" aria-label="Medium difficulty">Medium</button>
-            <button class="diffBtn" data-size="25" aria-label="Hard difficulty">Hard</button>
+            <button class="diffBtn" data-size="9" aria-label="Easy difficulty">
+              Easy
+            </button>
+            <button
+              class="diffBtn"
+              data-size="16"
+              aria-label="Medium difficulty"
+            >
+              Medium
+            </button>
+            <button class="diffBtn" data-size="25" aria-label="Hard difficulty">
+              Hard
+            </button>
           </div>
 
           <div class="controls" aria-label="Game controls">
-            <button id="startBtn" class="btn" aria-label="Start round">Start Round</button>
+            <button id="startBtn" class="btn" aria-label="Start round">
+              Start Round
+            </button>
           </div>
 
-          <p id="roundDisplay" aria-label="Current round" style="display: none;"></p>
+          <p
+            id="roundDisplay"
+            aria-label="Current round"
+            style="display: none"
+          ></p>
 
           <div class="grid-wrapper" aria-label="Memory grid">
-            <div id="gridContainer" data-size="9" aria-label="Memory squares grid"></div>
+            <div
+              id="gridContainer"
+              data-size="9"
+              aria-label="Memory squares grid"
+            ></div>
           </div>
-
         </div>
 
         <p id="message"></p>
       </section>
     </main>
 
+    <!-- SOUND EFFECTS -->
+    <audio id="soundCorrect" preload="auto">
+      <source src="assets/sounds/correct.mp3" type="audio/mpeg" />
+    </audio>
+
+    <audio id="soundFail" preload="auto">
+      <source src="assets/sounds/fail.mp3" type="audio/mpeg" />
+    </audio>
+
+    <audio id="soundBoss" preload="auto">
+      <source src="assets/sounds/boss.mp3" type="audio/mpeg" />
+    </audio>
+
+    <audio id="soundVictory" preload="auto">
+      <source src="assets/sounds/victory.mp3" type="audio/mpeg" />
+    </audio>
   </body>
 </html>

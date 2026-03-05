@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
   // Highlight active nav link
   $("#navLinks a").each(function () {
     if (this.href === window.location.href) {
@@ -7,6 +8,7 @@ $(document).ready(function () {
   });
 
   if ($("#gridContainer").length) {
+
     let activeSquares = [];
     let playerSelections = [];
     let roundActive = false;
@@ -24,6 +26,21 @@ $(document).ready(function () {
     const $startBtn = $("#startBtn");
     const $message = $("#message");
 
+    // ======================
+    // SOUND EFFECTS
+    // ======================
+
+    const soundCorrect = document.getElementById("soundCorrect");
+    const soundFail = document.getElementById("soundFail");
+    const soundBoss = document.getElementById("soundBoss");
+    const soundVictory = document.getElementById("soundVictory");
+
+    function playSound(sound) {
+      if (!sound) return;
+      sound.currentTime = 0;
+      sound.play();
+    }
+
     $gridContainer.hide();
     $roundDisplay.hide();
     $message.hide();
@@ -32,10 +49,12 @@ $(document).ready(function () {
     // CELEBRATION CONFETTI
     // ======================
     function fireConfetti() {
+
       const duration = 1200;
       const end = Date.now() + duration;
 
       (function frame() {
+
         confetti({
           particleCount: 6,
           angle: 60,
@@ -53,6 +72,7 @@ $(document).ready(function () {
         if (Date.now() < end) {
           requestAnimationFrame(frame);
         }
+
       })();
     }
 
@@ -60,6 +80,7 @@ $(document).ready(function () {
     // Create Grid
     // ======================
     function createGrid(totalSquares) {
+
       $gridContainer.empty();
 
       for (let i = 0; i < totalSquares; i++) {
@@ -74,28 +95,35 @@ $(document).ready(function () {
     // Difficulty Scaling
     // ======================
     function updateDifficultySettings() {
+
       if (round <= 4) {
         totalToHighlight = 4;
         highlightSpeed = 2500;
-      } else if (round <= 9) {
+      }
+      else if (round <= 9) {
         totalToHighlight = 5;
         highlightSpeed = 2500;
-      } else if (round <= 14) {
+      }
+      else if (round <= 14) {
         totalToHighlight = 5;
         highlightSpeed = 1500;
-      } else if (round <= 20) {
+      }
+      else if (round <= 20) {
         totalToHighlight = 6;
         highlightSpeed = 2500;
-      } else {
+      }
+      else {
         totalToHighlight = 6;
         highlightSpeed = 1200;
       }
+
     }
 
     // ======================
     // Start Round
     // ======================
     function startRound() {
+
       activeSquares = [];
       playerSelections = [];
       roundActive = false;
@@ -108,15 +136,20 @@ $(document).ready(function () {
       let totalSquares = $(".square").length;
 
       while (activeSquares.length < totalToHighlight) {
+
         let randomIndex = Math.floor(Math.random() * totalSquares);
 
         if (!activeSquares.includes(randomIndex)) {
+
           activeSquares.push(randomIndex);
           $(".square").eq(randomIndex).addClass("active");
+
         }
+
       }
 
       setTimeout(function () {
+
         $(".square").removeClass("active");
         roundActive = true;
 
@@ -128,12 +161,14 @@ $(document).ready(function () {
           .animate({ opacity: 1 }, 400);
 
       }, highlightSpeed);
+
     }
 
     // ======================
     // FULL RESET
     // ======================
     function resetGameCompletely() {
+
       round = 1;
       activeSquares = [];
       playerSelections = [];
@@ -152,17 +187,18 @@ $(document).ready(function () {
       $roundDisplay.fadeOut(400);
 
       $difficultyBtns.add($startBtn).each(function () {
-        $(this)
-          .css({
-            display: "inline-block",
-            opacity: 0,
-          })
-          .animate({ opacity: 1 }, 600);
+
+        $(this).css({
+          display: "inline-block",
+          opacity: 0
+        }).animate({ opacity: 1 }, 600);
+
       });
 
       $message.stop(true, true).fadeOut(400, function () {
         $(this).text("");
       });
+
     }
 
     // ======================
@@ -178,11 +214,14 @@ $(document).ready(function () {
 
       if (correctCount === totalToHighlight) {
 
+        playSound(soundCorrect);
+
         round++;
 
         // GAME COMPLETED
         if (round > 25) {
 
+          playSound(soundVictory);
           fireConfetti();
 
           $message
@@ -209,7 +248,10 @@ $(document).ready(function () {
           nextMessage = "Impressive focus. Things are about to speed up...";
         }
         else if (round === 21) {
+
           nextMessage = "🔥 Boss Level Incoming 🔥 Stay sharp...";
+          playSound(soundBoss);
+
         }
 
         $message
@@ -221,7 +263,10 @@ $(document).ready(function () {
 
         setTimeout(startRound, 2000);
 
-      } else {
+      }
+      else {
+
+        playSound(soundFail);
 
         $message
           .stop(true, true)
@@ -233,7 +278,9 @@ $(document).ready(function () {
         setTimeout(function () {
           $message.fadeOut(400, resetGameCompletely);
         }, 2000);
+
       }
+
     }
 
     // ======================
@@ -255,6 +302,7 @@ $(document).ready(function () {
         .css("opacity", 0)
         .text("Difficulty set. Press Start.")
         .animate({ opacity: 1 }, 400);
+
     });
 
     // ======================
@@ -279,7 +327,9 @@ $(document).ready(function () {
         $roundDisplay.fadeIn(600);
 
         setTimeout(startRound, 800);
+
       }
+
     });
 
     // ======================
@@ -297,22 +347,28 @@ $(document).ready(function () {
 
         if (activeSquares.includes(index)) {
           $(this).addClass("correct");
-        } else {
+        }
+        else {
           $(this).addClass("incorrect");
         }
+
       }
 
       if (playerSelections.length === totalToHighlight) {
         endRound();
       }
+
     });
+
   }
 
   // Burger Menu
   $("#burger").click(function () {
+
     if ($(window).width() <= 992) {
       $("nav").toggleClass("open");
     }
+
   });
 
 });
