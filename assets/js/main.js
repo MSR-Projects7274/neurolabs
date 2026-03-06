@@ -5,16 +5,16 @@ $(document).ready(function () {
 // ======================
 (function() {
   const validPaths = [
-    "./",                // Root
-    "./index.html",
-    "./about.html"       // Add other pages here if needed
+    "/neurolabs/",            // Root
+    "/neurolabs/index.html",
+    "/neurolabs/about.html"   // Add other pages here if needed
   ];
-  
+
   const currentPath = window.location.pathname;
 
   // Only redirect if not valid AND not already on 404.html
-  if (!validPaths.includes(currentPath) && !currentPath.endsWith("./404.html")) {
-    window.location.href = "./index.html"; // go back to home
+  if (!validPaths.includes(currentPath) && !currentPath.endsWith("/404.html")) {
+    window.location.href = "/neurolabs/404.html"; // redirect to 404 page
     return; // Stop further JS execution
   }
 })();

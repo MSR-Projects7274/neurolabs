@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,8 +12,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- JS -->
-     <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
   </head>
+
   <body>
     <div id="errorContainer">
       <h1>404</h1>
@@ -21,10 +22,10 @@
       <p>It seems you've ventured into uncharted NeuroLab territory.</p>
     </div>
 
-    <!-- 404 auto-redirect JS -->
     <script>
-      setTimeout(function() {
-        window.location.href = "/index.html";
+      // Auto-redirect to home after 3 seconds
+      setTimeout(function () {
+        window.location.href = "/neurolabs/";
       }, 3000);
     </script>
   </body>
