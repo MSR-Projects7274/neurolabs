@@ -1,21 +1,15 @@
 $(document).ready(function () {
 
-// ======================
-// 404 REDIRECT HANDLER
-// ======================
 (function() {
   const validPaths = [
-    "/neurolabs/",            // Root
-    "/neurolabs/index.html",
-    "/neurolabs/about.html"   // Add other pages here if needed
+    "index.html",
+    "about.html",
+    "game.html"
   ];
+  const currentPath = window.location.pathname.split("/").pop(); // just filename
 
-  const currentPath = window.location.pathname;
-
-  // Only redirect if not valid AND not already on 404.html
-  if (!validPaths.includes(currentPath) && !currentPath.endsWith("/404.html")) {
-    window.location.href = "/neurolabs/404.html"; // redirect to 404 page
-    return; // Stop further JS execution
+  if (!validPaths.includes(currentPath) && currentPath !== "404.html") {
+    window.location.href = "index.html"; // back to home
   }
 })();
 
