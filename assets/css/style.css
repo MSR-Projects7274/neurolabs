@@ -526,7 +526,7 @@ body::after {
   position: fixed;
   inset: 0;
   pointer-events: none; /* click-through */
-  z-index: 1; /* above grid but below nav */
+  z-index: 5;
   
   background: repeating-linear-gradient(
     to bottom,

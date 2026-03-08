@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-
 // ======================
 // BASE IDEA AND BEGINNING CODE CREATED BY MYSELF
 // FINISHING TOUCHES AND ENHANCEMENTS ADDED BY CHATGPT
