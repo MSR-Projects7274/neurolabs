@@ -1,3 +1,5 @@
+/* jshint esversion: 6 */
+
 // ======================
 // BASE IDEA AND BEGINNING CODE CREATED BY MYSELF
 // FINISHING TOUCHES AND ENHANCEMENTS ADDED BY CHATGPT
@@ -231,7 +233,7 @@ $(document).ready(function () {
       difficultySelected = false;
       gridSize = 0;
 
-      $("body").css("background", "black").removeClass("boss-dark boss-shake");
+      $("body").removeClass("boss-dark boss-shake");
       $gridContainer.removeClass("boss-pulse");
       $difficultyBtns.removeClass("active-diff").prop("disabled", false);
 
