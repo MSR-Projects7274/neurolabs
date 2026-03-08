@@ -1,3 +1,7 @@
+// ======================
+// BASE IDEA AND BEGINNING CODE CREATED BY MYSELF
+// FINISHING TOUCHES AND ENHANCEMENTS ADDED BY CHATGPT
+// ======================
 $(document).ready(function () {
 
 (function() {
@@ -6,10 +10,10 @@ $(document).ready(function () {
     "about.html",
     "game.html"
   ];
-  const currentPath = window.location.pathname.split("/").pop(); // just filename
+  const currentPath = window.location.pathname.split("/").pop();
 
   if (!validPaths.includes(currentPath) && currentPath !== "404.html") {
-    window.location.href = "index.html"; // back to home
+    window.location.href = "index.html";
   }
 })();
 
@@ -23,7 +27,7 @@ $(document).ready(function () {
   });
 
   // ======================
-  // MONITOR READOUT SYSTEM (homepage only)
+  // MONITOR READOUT SYSTEM
   // ======================
   if ($("#monitorText").length) {
     const messages = [
