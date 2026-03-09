@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -25,16 +25,16 @@
       href="assets/images/favicon-16x16.png"
     />
 
-    <!-- CSS -->
+    <!--CSS-->
     <link rel="stylesheet" href="assets/css/style.css" />
 
-    <!-- jQuery CDN -->
+    <!--jQuery CDN-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Confetti -->
+    <!--Confetti-->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    <!-- JS -->
+    <!--JS-->
     <script src="assets/js/main.js" defer></script>
   </head>
 
@@ -65,9 +65,9 @@
         <h2>Visual Recall Challenge</h2>
         <p>Memorise the highlighted squares before they disappear.</p>
 
-        <!-- Wrapper for buttons + grid for smooth slide -->
+        <!--Wrapper for buttons + grid for smooth slide-->
         <div id="gameControlsWrapper">
-          <!-- Difficulty buttons group -->
+          <!--Difficulty buttons group-->
           <div
             class="difficulty"
             role="group"
@@ -88,17 +88,20 @@
             </button>
           </div>
 
-          <!-- Game controls -->
+          <!--Game controls-->
           <div class="controls" role="group" aria-label="Game controls">
             <button id="startBtn" class="btn" aria-label="Start round">
               Start Round
             </button>
           </div>
 
-          <!-- Current round display -->
+          <!--Current round display-->
           <p id="roundDisplay" role="status" style="display: none"></p>
 
-          <!-- Memory grid -->
+          <!--Feedback message-->
+          <p id="message"></p>
+
+          <!--Memory grid-->
           <div class="grid-wrapper">
             <div
               id="gridContainer"
@@ -108,13 +111,10 @@
             ></div>
           </div>
         </div>
-
-        <!-- Feedback message -->
-        <p id="message"></p>
       </section>
     </main>
 
-    <!-- SOUND EFFECTS -->
+    <!--Sound Effects-->
     <audio id="soundCorrect" preload="auto">
       <source src="assets/sounds/correct.mp3" type="audio/mpeg" />
     </audio>

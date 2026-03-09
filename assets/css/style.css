@@ -10,7 +10,7 @@ body {
   color: #ffffff;
 }
 
-/*Navigation*/
+/*NAVIGATION*/
 nav {
   display: flex;
   justify-content: space-between;
@@ -50,7 +50,7 @@ nav a.active {
   font-weight: bold;
 }
 
-/*Hero Section*/
+/*HERO SECTION*/
 .hero {
   text-align: center;
   margin-top: 100px;
@@ -62,7 +62,7 @@ nav a.active {
   text-align: center;
 }
 
-/* Buttons */
+/*BUTTONS*/
 .btn {
   display: inline-block;
   margin-top: 20px;
@@ -79,7 +79,7 @@ nav a.active {
   transform: scale(1.05);
 }
 
-/* Monitor Readout */
+/*MONITOR READOUT*/
 .monitor {
   background: #000;
   border: 2px solid #00f7ff;
@@ -100,7 +100,7 @@ nav a.active {
   white-space: nowrap;
 }
 
-/* Fine Print */
+/*FINE PRINT*/
 .fine-print {
   font-size: 0.45em; /* Extra tiny fine print */
   color: #555;
@@ -108,7 +108,7 @@ nav a.active {
   line-height: 1.2;
 }
 
-/*Game Page HTML*/
+/*GAME PAGE HTML*/
 .game-area {
   text-align: center;
   margin-top: 60px;
@@ -144,7 +144,7 @@ nav a.active {
   background-color: #ff3c3c;
 }
 
-/*Difficulty*/
+/*DIFFICULTY*/
 .difficulty {
   margin-bottom: 20px;
 }
@@ -170,7 +170,7 @@ nav a.active {
   color: #121212;
 }
 
-/*Hide Difficulty and Start Buttons when Game begins*/
+/*HIDE DIFFICULTY & START BUTTONS WHEN GAME BEGINS*/
 .hidden-smooth {
   opacity: 0;
   pointer-events: none;
@@ -182,7 +182,7 @@ nav a.active {
   transition: opacity 0.8s ease;
 }
 
-/*Round Display*/
+/*ROUND DISPLAY*/
 #roundDisplay {
   font-weight: bold;
   margin-top: 20px;
@@ -201,15 +201,15 @@ nav a.active {
   min-height: 60px;
 }
 
-/*Boss Level*/
+/*BOSS LEVEL*/
 
-/* Screen Darken */
+/*SCREEN DARKEN*/
 .boss-dark {
   background: rgba(0, 0, 0, 0.6);
   transition: background 0.4s ease;
 }
 
-/* Screen Shake */
+/*SCREEN SHAKE*/
 @keyframes bossShake {
   0% {
     transform: translate(0);
@@ -232,7 +232,7 @@ nav a.active {
   animation: bossShake 0.6s ease-in-out 3;
 }
 
-/* Grid Pulse */
+/*GRID PULSE*/
 @keyframes bossPulse {
   0% {
     box-shadow: 0 0 0px red;
@@ -249,13 +249,13 @@ nav a.active {
   animation: bossPulse 0.8s ease-in-out infinite;
 }
 
-/* Glitch Flicker */
+/*GLTICH FLICKER*/
 .glitch {
   background: #ff2a2a !important;
   box-shadow: 0 0 10px #ff0000;
 }
 
-/*About Page*/
+/*ABOUT PAGE*/
 .container {
   max-width: 600px;
   margin: 80px auto;
@@ -267,7 +267,7 @@ a {
   font-weight: bold;
 }
 
-/* Burger */
+/*BURGER*/
 .burger {
   display: none;
   flex-direction: column;
@@ -332,11 +332,9 @@ nav.open .burger span:nth-child(3) {
   }
 }
 
-/* =========================
-   NEUROLAB GAME BACKGROUND
-   ========================= */
+/*NEUROLAB GAME BACKGROUND*/
 
-/* Moving Lab Grid */
+/*MOVING LAB GRID*/
 body::before {
   content: "";
   position: fixed;
@@ -369,9 +367,7 @@ body::before {
   }
 }
 
-/* =========================
-   STRONGER CRT SCANLINES
-   ========================= */
+/*STRONGER CRT SCANLINES*/
 
 body::after {
   content: "";
@@ -403,7 +399,7 @@ body::after {
   }
 }
 
-/* Subtle monitor flicker */
+/*SUBTLE MONITOR FLICKER*/
 @keyframes monitorFlicker {
   0% {
     opacity: 1;
@@ -426,9 +422,7 @@ body {
   animation: monitorFlicker 3s infinite;
 }
 
-/* ============================= */
-/* Retro System Grid Background  */
-/* ============================= */
+/*RETRO SYSTEM GRID BACKGROUND*/
 
 body::after {
   content: "";
@@ -468,7 +462,7 @@ body::after {
   text-align: center;
   background: radial-gradient(circle at center, #0d0d0d, #000000);
   color: white;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 #errorContainer h1 {
@@ -486,9 +480,7 @@ body::after {
   margin-bottom: 2rem;
 }
 
-/* =========================
-   BURGER MENU FIX
-   ========================= */
+/*BURGER MENU FIX*/
 @media (max-width: 992px) {
   nav ul {
     position: absolute;
@@ -503,8 +495,10 @@ body::after {
     overflow: hidden;
     max-height: 0;
     opacity: 0;
-    transition: max-height 0.6s ease, opacity 0.3s ease;
-    z-index: 10; /* ADD THIS */
+    transition:
+      max-height 0.6s ease,
+      opacity 0.3s ease;
+    z-index: 10;
   }
 
   nav.open ul {
@@ -513,7 +507,7 @@ body::after {
   }
 
   .burger {
-    z-index: 11; /* make sure the burger icon stays on top */
+    z-index: 11; /*Makes sure the burger icon stays on top*/
   }
 }
 
@@ -524,16 +518,14 @@ body::after {
   }
 }
 
-/* =========================
-   CRT SCANLINES OVERLAY
-   ========================= */
+/*CRT SCANLINES OVERLAY*/
 body::after {
   content: "";
   position: fixed;
   inset: 0;
-  pointer-events: none; /* click-through */
+  pointer-events: none; /*Click-through*/
   z-index: 5;
-  
+
   background: repeating-linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0.08),
@@ -541,7 +533,7 @@ body::after {
     transparent 1px,
     transparent 3px
   );
-  
+
   animation: scanlineMove 4s linear infinite;
 }
 
@@ -551,5 +543,45 @@ body::after {
   }
   to {
     background-position: 0 20px;
+  }
+}
+
+/*FEEDBACK MESSAGE ABOVE THE GRID*/
+#message {
+  margin: 5px 0 8px 0;
+  min-height: 20px;
+  text-align: center;
+}
+
+/*GRID RESPONSIVENESS*/
+
+/* Tablets & small laptops */
+@media (max-width: 1024px) {
+  #gridContainer {
+    width: 86vw;      /* slightly smaller */
+    max-width: 400px; /* reduces overflow vertically too */
+    gap: 5px;         /* tighter gap */
+    margin: -5px auto; /* trims top/bottom spacing */
+  }
+
+  #message {
+    margin: 4px 0 12px 0; /* reduces space above/below message */
+  }
+
+  .square {
+    border-radius: 8px; /* keeps corners proportional */
+  }
+}
+
+/* Small tablets & large phones */
+@media (max-width: 768px) {
+  #gridContainer {
+    width: 95vw;
+    max-width: 350px; /* shrink further */
+    gap: 5px;         /* tighter gap */
+  }
+
+  .square {
+    border-radius: 6px;
   }
 }
