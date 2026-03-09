@@ -102,7 +102,7 @@ nav a.active {
 
 /*FINE PRINT*/
 .fine-print {
-  font-size: 0.45em; /* Extra tiny fine print */
+  font-size: 0.45em; /*Extra tiny fine print*/
   color: #555;
   margin-top: 2rem;
   line-height: 1.2;
@@ -555,30 +555,30 @@ body::after {
 
 /*GRID RESPONSIVENESS*/
 
-/* Tablets & small laptops */
+/*TABLETS & SMALL LAPTOPS*/
 @media (max-width: 1024px) {
   #gridContainer {
-    width: 86vw;      /* slightly smaller */
-    max-width: 400px; /* reduces overflow vertically too */
-    gap: 5px;         /* tighter gap */
-    margin: -5px auto; /* trims top/bottom spacing */
+    width: 86vw; /*Slightly smaller*/
+    max-width: 400px; /*Reduces overflow vertically*/
+    gap: 5px; /*Tighter gap*/
+    margin: -5px auto; /*Trims top/bottom spacing*/
   }
 
   #message {
-    margin: 4px 0 12px 0; /* reduces space above/below message */
+    margin: 4px 0 12px 0; /*Reduces space above/below message*/
   }
 
   .square {
-    border-radius: 8px; /* keeps corners proportional */
+    border-radius: 8px; /*Keeps corners proportional*/
   }
 }
 
-/* Small tablets & large phones */
+/*SMALL TABLETS & LARGE PHONES*/
 @media (max-width: 768px) {
   #gridContainer {
     width: 95vw;
-    max-width: 350px; /* shrink further */
-    gap: 5px;         /* tighter gap */
+    max-width: 350px; /*Shrink further*/
+    gap: 5px; /*Tighter gap*/
   }
 
   .square {

@@ -364,7 +364,7 @@ $(document).ready(function () {
       if (playerSelections.length === totalToHighlight) endRound();
     });
 
-  } // END GRID CONTAINER CHECK
+  }
 
   // ======================
   // BURGER MENU
