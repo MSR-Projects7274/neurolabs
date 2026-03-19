@@ -188,17 +188,10 @@ nav a.active {
   margin-top: 20px;
   color: #00f7ff;
   font-size: 1.2em;
-}
-
-#roundDisplay {
   display: block;
   min-height: 30px;
   line-height: 30px;
   margin: 20px 0;
-}
-
-#message {
-  min-height: 60px;
 }
 
 /*BOSS LEVEL*/
@@ -358,15 +351,6 @@ body::after {
   );
 
   animation: scanlineMove 4s linear infinite;
-}
-
-@keyframes scanlineMove {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 0 20px;
-  }
 }
 
 /*SUBTLE MONITOR FLICKER*/
