@@ -331,7 +331,6 @@ body::before {
 }
 
 /*STRONGER CRT SCANLINES*/
-
 body::after {
   content: "";
   position: fixed;
@@ -377,7 +376,6 @@ body {
 }
 
 /*RETRO SYSTEM GRID BACKGROUND*/
-
 body::after {
   content: "";
   position: fixed;

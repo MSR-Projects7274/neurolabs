@@ -264,7 +264,9 @@ $(document).ready(function () {
           return;
         }
 
+        // ======================
         // BOSS EVENT
+        // ======================
         if (round === 21) {
           $message.stop(true, true).show().css("opacity", 0).text("Correct! Next round star—").animate({ opacity: 1 }, 200);
 
